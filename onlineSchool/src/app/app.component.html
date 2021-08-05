@@ -1,0 +1,109 @@
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+<link rel="stylesheet" href="app.component.css"/>
+<div id="myContainer">
+<header>
+    <div class="headerName">
+        <ins>Online School</ins>
+    </div> 
+    <span class="actionButtons">
+        <button type="button" id="addPupilToBD" data-toggle="modal" data-target="#addPupilModal"  > Добавить ученика </button>
+        <button id="Exit"> Выход </button>
+    </span>
+</header>   
+<div  class="container mt-3 mb-4">
+<div class="col-lg-18 mt-4 mt-lg-0">
+    
+        <div class="user-dashboard-info-box mb-0 bg-white p-4 shadow-sm">
+          <table class="table manage-pupils-top " >
+            <thead>
+              <tr>
+                <th class="text-center"> ID </th>
+                <th class="text-center"> Полное имя </th>
+                <th class="text-center"> Класс </th>
+                <th class="text-center">Успеваемость</th>
+                <th class="action text-right">Редактировать</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let pupil of pupils">
+              <tr class="pupils-list">
+                <td>{{pupil?.id}}</td>
+                <td>{{pupil?.name}} {{pupil.surname}} {{pupil.patronymic}}</td>
+                <td>{{pupil?.grade}}</td>
+                <td>{{pupil?.performance}}%</td>
+                <td>
+                  <ul class="list-unstyled mb-0 d-flex justify-content-center">
+                    <li><a (click)="onOpenModal(pupil, 'delete')" class="btn text-danger" data-placement="top" data-original-title="Delete"><i class="far fa-trash-alt"></i></a></li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+  </div>
+</div>
+</div>
+
+<!-- Add Employee Modal -->
+<div class="modal fade" id="addPupilModal" tabindex="-1" role="dialog" aria-labelledby="addPupilModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="addPupilModalLabel">Добавить ученика</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <form #addForm="ngForm" (ngSubmit)="onAddPupil(addForm)">
+            <div class="form-group">
+               <label for="name">Имя</label>
+               <input type="text" ngModel name="name" class="form-control" id="name" placeholder="Имя" required>
+            </div>
+            <div class="form-group">
+                <label for="surname">Фамилия</label>
+                <input type="text" ngModel name="surname" class="form-control" id="surname" placeholder="Фамилия" required>
+             </div>
+             <div class="form-group">
+                <label for="patronymic">Отчество</label>
+                <input type="text" ngModel name="patronymic" class="form-control" id="patronymic" placeholder="Отчество" required>
+             </div>
+            <div class="form-group">
+               <label for="grade">Класс</label>
+               <input type="text" ngModel name="grade" class="form-control" id="grade" placeholder="Класс" required>
+            </div>
+            <div class="form-group">
+                <label for="performance">Успеваемость</label>
+                <input type="number" ngModel name="performance" class="form-control" id="performance" placeholder="Успеваемость, %" required>
+             </div>
+            <div class="modal-footer">
+               <button type="button" id="add-pupil-form" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+               <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary" >Сохранить</button>
+            </div>
+            </form>
+         </div>
+      </div>
+    </div>
+    </div>
+  
+  <!-- Delete Modal -->
+  <div class="modal fade" id="deletePupilModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+       <div class="modal-content">
+          <div class="modal-header">
+             <h5 class="modal-title" id="deleteModelLabel">Удаление учащегося</h5>
+             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">&times;</span>
+             </button>
+          </div>
+          <div class="modal-body">
+             <p>Вы хотите удалить учащегося {{deletePupil.surname}} {{deletePupil.name}} ?</p>
+             <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
+                <button class="btn btn-danger" (click)="onDeletePupil(deletePupil.id)" data-dismiss="modal">Да</button>
+             </div>
+          </div>
+       </div>
+    </div>
+  </div>
